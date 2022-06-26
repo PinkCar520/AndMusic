@@ -52,8 +52,7 @@
     <!-- 歌曲列表 -->
     <div class="track-list">
       <!-- 渲染歌曲区域 -->
-      <div class="track-item" v-for="track in tracksList" :key="track.id" @click="selectTrack(track.id)"
-        >
+      <div class="track-item" v-for="track in tracksList" :key="track.id" @click="selectTrack(track.id)">
         <!-- :class="{ copy: track.copyright == isCopyright }" -->
         <div class="play track-play" title="">
           <!-- :class="{ copy: track.copyright == isCopyright, disabled: track.copyright == isCopyright }" -->
@@ -203,16 +202,24 @@ export default {
 
     & .banner-info {
       // 榜单信息
+      width: 420px;
       height: 290px;
       padding: 0.5rem 2rem;
       border-radius: 10px;
       background-color: #fff;
       box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
 
       & h2 {
         font-weight: 500;
         color: #444;
-        margin: 1rem 0;
+        width: calc(100% - 5px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 10px 0;
       }
 
       & .banner-brief {
@@ -241,7 +248,7 @@ export default {
         }
 
         & .description {
-          padding: 1rem 0;
+          padding: 5px 0;
 
           & p {
             color: #707070;
@@ -263,6 +270,7 @@ export default {
         & .buttons {
           width: 100%;
           height: 40px;
+          margin: 10px 0;
 
           & button {
             width: 100px;

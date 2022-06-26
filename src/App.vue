@@ -76,7 +76,6 @@ html {
   min-width: 1423px;
   background-color: #f5f5f5;
   transition: all 0.4s;
-
 }
 
 * {
@@ -95,18 +94,16 @@ html {
 
 ::-webkit-scrollbar {
   width: 10px;
-  display: none;
 }
+
 
 /* 滚动槽 */
 
 ::-webkit-scrollbar-track {
-  position: fixed;
-  right: 0;
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
   border-radius: 5px;
-  margin: 70px 0;
 }
+
 
 /* 滚动条滑块 */
 
@@ -114,19 +111,14 @@ html {
   border-radius: 5px;
   background: rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
-  margin-top: 70px;
 }
 
 ::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(170, 175, 177, 0.7);
-  margin-top: 70px;
-
 }
 
 .scrollbar::-webkit-scrollbar {
   display: none;
-  margin-top: 70px;
-
   /* Chrome Safari */
 }
 
@@ -137,8 +129,6 @@ html {
   /* IE 10+ */
   overflow-x: hidden;
   overflow-y: auto;
-  margin-top: 70px;
-
 }
 
 img[lazy="loading"] {
