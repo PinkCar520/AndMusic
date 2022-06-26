@@ -6,7 +6,7 @@ import {
 const request = axios.create({
     // https://netease-cloud-music-api-binaryify.vercel.app/album/newest
     // baseURL: '/',
-    baseURL: 'http://127.0.0.1:3000',
+    baseURL: 'https://netease-cloud-music-api-nine-olive.vercel.app',
     // 允许携带cookie
     withCredentials: true,
     timeout: 10000 // 请求超时-->5000ms,
