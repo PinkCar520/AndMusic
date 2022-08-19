@@ -4,6 +4,7 @@
 
 AndMusic 是 基于 [网易云音乐 API](https://binaryify.github.io/NeteaseCloudMusicApi/#)
 界面风格参考了各平台、实现了一些基础功能、代码还在完善中...
+[demo](https://and-music.vercel.app/)
 
 #### 安装教程
 
