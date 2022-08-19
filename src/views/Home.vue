@@ -70,9 +70,9 @@
       </div>
     </div>
     <!-- 排行榜 end -->
-
+    <LargerBanner :BannerData="albumList" ref="lagerBanner"></LargerBanner>
     <!-- 新碟上架 start-->
-    <div class="disc">
+    <!-- <div class="disc">
       <div class="disc-title">
         <h1>新碟上架</h1>
         <a @click="goToAllDisc(categoryDisc)">查看更多</a>
@@ -87,12 +87,12 @@
           </div>
           <div class="disc-info">
             <h3>{{ album.name }}</h3>
-            <!-- <h5 class="item-id">{{ album.artists[0].id }}</h5> -->
+            <h5 class="item-id">{{ album.artists[0].id }}</h5>
             <p>{{ album.artists[0].name }}</p>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- 新碟上架 end -->
 
     <!-- 推荐歌单 start-->
@@ -129,11 +129,15 @@ import {
   getPlaylistDetailAPI,
 } from "@/api/playlist";
 import { getUserRecommendSongsListAPI, getPersonalFmAPI } from "@/api/user"
+import LargerBanner from "@/components/LargerBanner/LargerBanner.vue";
 import SvgIcon from "../components/SvgIcon.vue";
 import NProgress from "nprogress";
 export default {
   name: "Home",
-  components: { SvgIcon },
+  components: {
+    SvgIcon,
+    LargerBanner
+  },
   data() {
     return {
       show: false,
@@ -182,11 +186,12 @@ export default {
     // 获取每日推荐歌曲
     async getUserRecommendSongsList() {
       const { data: res } = await getUserRecommendSongsListAPI()
-      this.randomId = Math.round(Math.random() * 30)
-      this.userRecommendSongsList = res.data.dailySongs[this.randomId]
-      this.userRecommendSongsCover = res.data.dailySongs[this.randomId].al.picUrl
-      this.userRecommendSingerName = res.data.dailySongs[this.randomId].ar[0].name
-      // console.log('用户每日推荐歌曲-->', this.userRecommendSongsList);
+      if (res.code === "200") {
+        this.randomId = Math.round(Math.random() * 30)
+        this.userRecommendSongsList = res.data.dailySongs[this.randomId]
+        this.userRecommendSongsCover = res.data.dailySongs[this.randomId].al.picUrl
+        this.userRecommendSingerName = res.data.dailySongs[this.randomId].ar[0].name
+      }
     },
     // 获取私人FM歌曲
     async getPersonalFm() {
@@ -339,8 +344,10 @@ a {
     // padding-top: 50px;
 
     & h1 {
-      height: 80px;
-      line-height: 80px;
+      font-size: 35px;
+      margin: 40px 0;
+      // height: 80px;
+      // line-height: 80px;
     }
 
     & .recommend-content {
@@ -417,7 +424,8 @@ a {
           bottom: 0;
           right: 0;
           color: #fff;
-          padding: 5px;
+          padding: 5px 8px;
+          font-size: 14px;
           background: rgb(236, 65, 65);
           border-top-left-radius: 10px;
           border-bottom-right-radius: 10px;
@@ -449,11 +457,13 @@ a {
       @include title;
 
       & h1 {
+        font-size: 35px;
         color: #333;
-        font-weight: 500;
+        font-weight: 550;
       }
 
       & a {
+        font-size: 18px;
         color: #b4b4b4;
       }
     }
@@ -490,11 +500,13 @@ a {
           text-align: center;
 
           & h3 {
+            width: 200px;
+            font-size: 20px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             font-weight: 500;
-            padding: 0.8rem 0em;
+            padding: 12px 0em;
           }
 
           & p {
@@ -515,11 +527,13 @@ a {
       @include title;
 
       & h1 {
+        font-size: 35px;
         color: #333;
-        font-weight: 500;
+        font-weight: 550;
       }
 
       & a {
+        font-size: 18px;
         color: #b4b4b4;
       }
     }
@@ -537,20 +551,27 @@ a {
         display: flex;
         flex-direction: column;
 
+        &.play {
+          height: 220px;
+        }
+
         & .disc-info {
           // 排行榜info
           width: 220px;
           text-align: center;
 
-          & h3 {
+          & h3,
+          & p {
+            font-size: 20px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             font-weight: 500;
-            padding: 0.8rem 0em;
+            padding: 12px 0;
           }
 
           & p {
+            font-size: 14px;
             color: #7d7d7d;
           }
         }
@@ -568,11 +589,13 @@ a {
       @include title;
 
       & h1 {
+        font-size: 35px;
         color: #333;
-        font-weight: 500;
+        font-weight: 550;
       }
 
       & a {
+        font-size: 18px;
         color: #b4b4b4;
       }
     }
@@ -594,7 +617,12 @@ a {
 
           // 排行榜info
           & h4 {
-            padding: 0.8rem 0;
+            width: 200px;
+            font-size: 18px;
+            padding: 10px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
       }

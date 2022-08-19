@@ -2,20 +2,19 @@
   <div>
     <div class="player" :class="{ active: isActive, unlock: isUnlock }">
       <!-- 原生audio标签 -->
-      <audio ref="audio" :src="'https://music.163.com/song/media/outer/url?id=' + songId + '.mp3'" preload="auto"
-        muted="muted" @canplay="ready" @timeupdate="updateTime" @ended="end" autoplay>
+      <audio ref="audio" :src="musicUrl" preload="auto" muted="muted" @canplay="ready" @timeupdate="updateTime"
+        @ended="end" autoplay>
         /> Your browser does not support t,. mnhe audio tag.
       </audio>
       <!-- 音频播放器控制条 -->
       <div class="player-container">
         <!-- 缩略图 -->
         <div class="thumbnail-info">
-          <div class="thumbnail" title="缩略图">
-            <!-- @click="musicPlayer()" -->
+          <div class="thumbnail" title="缩略图" @click="musicPlayer()">
             <button>
               <svg-icon icon-class="up"></svg-icon>
             </button>
-            <img class="thumb-img" :src="musicDetail.picUrl" />
+            <img class="thumb-img" :src="musicDetail.picUrl + '?param=112y112'" />
           </div>
           <div class="thumbnail-title">
             <h3>{{ musicDetail.name }}</h3>
@@ -28,7 +27,7 @@
             <svg-icon icon-class="prev"></svg-icon>
           </button>
           <!-- 播放暂停 -->
-          <button class="play-pause" title="暂停" @click="musicPlay($refs.audio)">
+          <button class="play-pause" title="暂停" @click="musicPlay($refs.audio)" :class="{ asd: isAsd }">
             <svg-icon :icon-class="isPaused ? 'play-big' : 'pause'"></svg-icon>
           </button>
           <!-- 上一首 -->
@@ -45,10 +44,12 @@
             </button>
             <div class="music-list" v-show="isPlayingList">
               <div class="title">
-                当前播放(10)
+                当前播放({{ playinglist.length }})
               </div>
               <div class="song-list">
-                <div class="playing-item" v-for="item in playinglist" :key="item.id">
+                <!-- 歌曲渲染 -->
+                <div class="playing-item" v-for="item in playinglist" :key="item.id" @click="selectTrack(item.id)"
+                  :class="{ activeSongColor: isActiveSongColor === item.id }">
                   <span class="songName">{{ item.name }}</span>
                   <span>-</span>
                   <span class="singer">{{ item.ar[0].name }}</span>
@@ -59,7 +60,7 @@
             <button class="stochastic" title="列表循环" @click="musicLoop()">
               <svg-icon :icon-class="isLoop ? 'single-cycle' : 'list-loop'"></svg-icon>
             </button>
-            <button title="随机播放" @click="musicShuffle()" :class="{ activeShuffle: isActive }">
+            <button title="随机播放" @click="musicShuffle()" :class="{ activeColor: isActive }">
               <svg-icon icon-class="shuffle-play"></svg-icon>
             </button>
             <!-- 音量开关 -->
@@ -146,13 +147,13 @@
  * @data 定义 audio: 原生Dom元素 isPaused: true/false isLock:true/false isMuted:true/false value(音量): 0-100
  * @VueSlider 音量滑动条效果
  */
-import SvgIcon from "./SvgIcon.vue";
+import SvgIcon from "@/components/SvgIcon.vue";
 import VueSlider from "vue-slider-component";
 import { getLyricAPI } from "@/api/playlist.js";
-import { getSongDetailAPI } from "@/api/song.js";
+import { getSongDetailAPI, getMusicUrlAPI } from "@/api/song.js";
 import "@/assets/css/slider.css";
-import { formatDuration } from "../utils/common";
-import BScroll from 'better-scroll'
+import { formatDuration } from "@/utils/common";
+import { mapState } from 'vuex'
 export default {
   name: "Player",
   components: {
@@ -160,6 +161,7 @@ export default {
   },
   data() {
     return {
+      isAsd: false,
       isPaused: true,
       isLoop: "",
       isMuted: "",
@@ -202,7 +204,11 @@ export default {
         ms: [] //歌词数组{t:时间,c:歌词}
       },
       // 详情封面
-      detailpicUrl: 'http://p1.music.126.net/fL9ORyu0e777lppGU3D89A==/109951167206009876.jpg'
+      detailpicUrl: 'http://p1.music.126.net/fL9ORyu0e777lppGU3D89A==/109951167206009876.jpg',
+      // 歌曲url
+      musicUrl: '',
+      // 播放列表音乐待激活状态
+      isActiveSongColor: ""
     };
   },
   props: {
@@ -215,37 +221,21 @@ export default {
       this.isLyricShow = state.isLyricShow;
       this.isActiveLyric = state.isLyricShow;
     })
-    // 从playlist.vue接受SongId
-    this.$bus.$on("songValue", (res) => {
-      this.songId = res;
-    });
-    // 从search.vue接受SongId
-    this.$bus.$on("trackValue", (msg) => {
-      this.songId = msg;
-    });
-    // 从User.vue接受SongId
-    this.$bus.$on("userValue", (msg) => {
-      this.songId = msg;
-    });
   },
   mounted() {
     let audio = this.$refs.audio;
-    // 传audio的Dom元素给vuex
-    this.$store.dispatch("save", audio);
     // 初始化某些值
     this.isMuted = audio.muted;
-    // this.$nextTick(() => {
-    //   this.scroll = new Bscroll(this.$refs.wrapper, {})
-    // })
-
-  },
-  // 在组件销毁前,清除事件监听
-  beforeDestroy() {
-    this.$bus.$off("songValue");
-    this.$bus.$off("trackValue");
-    this.$bus.$off("userValue");
   },
   methods: {
+    // 获取歌曲url
+    async getMusicUrl() {
+      const { data: res } = await getMusicUrlAPI(this.songId)
+      res.data.forEach((item) => {
+        this.musicUrl = item.url
+      });
+
+    },
     async getPlayingList() {
       this.isPlayingList = !this.isPlayingList
       this.playlist = this.$store.state.playlist
@@ -316,6 +306,17 @@ export default {
     ready() {
       let audio = this.$refs.audio;
       this.durationTime = audio.duration;
+      // if (audio.paused) {
+      //   // 先暂停
+      //   // audio.load()
+      //   // audio.pause();
+      //   this.$nextTick(() => {
+      //     // 解决chrome等浏览器,音频无法正常播放的问题
+      //     // 报错: The element has no supported sources.
+      //     audio.play();
+      //   });
+      this.getLyric()
+      // }
     },
     // 监听当前音频的时长更新
     updateTime(e) {
@@ -325,8 +326,11 @@ export default {
       this.progressValue = (this.currentTime / this.durationTime) * 100;
       // console.log(this.progressValue);
       this.currentTimeFormat = Math.round(e.target.currentTime);
-      // console.log(this.currentTimeFormat);
-      // if (this.lyricsArray.time === this.currentTimeFormat) { 
+      // const lyricItem = this.lyricsArray;
+      // lyricItem.forEach((item) => {
+      //   const playingTime = item.time;
+      // })
+      // if (this.lyricsArray.time === this.currentTimeFormat) {
 
       // }
     },
@@ -347,29 +351,19 @@ export default {
     // 音乐列表播放逻辑
     musicListPlay() {
       this.isPaused = false;
-      let audio = this.$refs.audio;
-      if (audio.paused) {
-        // 先暂停
-        audio.load()
-        audio.pause();
-        this.$nextTick(() => {
-          // 解决chrome等浏览器,音频无法正常播放的问题
-          // 报错: The element has no supported sources.
-          audio.play();
-        }, 1000);
-        this.getLyric()
-      }
+      this.isLockBarShow = true;
     },
-    // 音频播放、暂停逻辑
+    // 音频播放条、暂停逻辑
     musicPlay() {
       // icon取反
+      this.isAsd = !this.isAsd
       this.isPaused = !this.isPaused;
       let audio = this.$refs.audio;
       if (audio.paused) {
-        console.log("开始播放");
+        // console.log("开始播放");
         audio.play();
       } else {
-        console.log("暂停播放");
+        // console.log("暂停播放");
         audio.pause();
       }
     },
@@ -416,11 +410,11 @@ export default {
       if (audio.loop) {
         // 单曲循环
         this.loopMode = 1;
-        console.log('单曲循环');
+        // console.log('单曲循环');
       } else {
         // 列表循环
         this.loopMode = 0;
-        console.log('列表循环');
+        // console.log('列表循环');
       }
     },
     // 随机播放
@@ -428,10 +422,10 @@ export default {
       this.isActive = !this.isActive;
       if (!this.loopMode === 2) {
         this.loopMode = 0;
-        console.log('正常模式播放');
+        // console.log('正常模式播放');
       } else {
         this.loopMode = 2;
-        console.log('随机播放');
+        // console.log('随机播放');
       }
     },
     // 随机播放的逻辑 Math.random随机生成下标,达到随机播放的效果
@@ -448,7 +442,7 @@ export default {
       this.songId = this.playlist[this.musicRandom];
       // console.log(this.songId);
     },
-    // 音量播放、暂停逻辑
+    // 音量按钮逻辑
     musicVolume() {
       // icon取反
       this.isMuted = !this.isMuted;
@@ -456,26 +450,24 @@ export default {
       if (!audio.muted) {
         // muted也是个布尔属性值，表示音频是否静音，默认不静音播放。
         audio.muted = true;
-        console.log("静音模式开启:" + audio.muted);
+        // console.log("静音模式开启:" + audio.muted);
       } else {
         audio.muted = false;
-        console.log("静音模式关闭:" + audio.muted);
+        // console.log("静音模式关闭:" + audio.muted);
       }
     },
     // 设置音量
     musicSetVolume() {
       // // 根据滑块来设置音量
-      // let audio = this.$refs.audio;
-      // audio.volume = this.volumeValue - 0 / 100;
-      // // 根据滑块来判断icon的变换
-      // if (audio.volume <= 0) {
-      //   this.isMuted = true;
-      // } else if (audio.volume > 0) {
-      //   this.isMuted = false;
-      // }
-      // console.log("音量了" + this.isMuted);
-      // console.log("volumeValue:" + this.volumeValue);
-      // console.log("音量" + this.$refs.audio.volume);
+      let audio = this.$refs.audio;
+      console.log(audio.volume);
+      audio.volume = (this.volumeValue - 0) / 100;
+      // 根据滑块来判断icon的变换
+      if (audio.volume <= 0) {
+        this.isMuted = true;
+      } else if (audio.volume > 0) {
+        this.isMuted = false;
+      }
     },
     // 播放条显示/隐藏
     lock() {
@@ -494,12 +486,7 @@ export default {
     musicPlayer() {
       this.isLyricShow = true;
       this.$store.dispatch('change', this.isLyricShow)
-      // this.$bus.$emit("isLyricValue", this.isLyricShow)
-      console.log('目前设置isLyricShow的Boolean为:', this.isLyricShow);
-      console.log('目前Player查看到的isLyricShow的Boolean为:', this.$store.state.isLyricShow);
     },
-    // 选中某一行播放
-    // clickLyricPlay() { },
     // 退出歌词页面
     goBack() {
       // 取反
@@ -507,8 +494,8 @@ export default {
       this.isLyricShow = false;
       // 把修改后的值返回值给vuex
       this.$store.dispatch('change', this.isLyricShow)
-      console.log('目前设置isLyricShow的Boolean为:', this.isLyricShow);
-      console.log('目前Lyric查看到的isLyricShow的Boolean为:', this.$store.state.isLyricShow);
+      // console.log('目前设置isLyricShow的Boolean为:', this.isLyricShow);
+      // console.log('目前Lyric查看到的isLyricShow的Boolean为:', this.$store.state.isLyricShow);
     },
     // 歌曲详情
     musicData() {
@@ -527,6 +514,12 @@ export default {
       this.$store.watch((state, getters) => {
         this.songId = state.songId
       })
+    },
+    // 列表播放
+    // ...mapActions({ selectTrack: 'MusicId' }), // 性能问题暂时注释
+    selectTrack(value) {
+      this.isActiveSongColor = value
+      this.$store.dispatch('MusicId', value)
     }
   },
   computed: {
@@ -542,16 +535,13 @@ export default {
       if (oldSongId === newSongId || this.songId === undefined) {
         return
       } else {
-        // 监听歌曲id变化来操作播放、暂停
-        // console.log("歌曲id变化了", newSongId);
-        // console.log("双击播放");
-        // console.log('新', newSongId);
-        // console.log('旧', oldSongId);
         this.$store.dispatch("MusicId", newSongId);
-        // 异步播放音乐,避免浏览器报错
+        // 获取音频url
+        this.getMusicUrl();
+        // 播放交互按钮切换
         this.musicListPlay();
-        this.musicData(); // 播放条的封面图和歌手信息
-        this.isLockBarShow = true
+        // 播放条的封面图和歌手信息
+        this.musicData();
       }
     },
   },
@@ -579,9 +569,8 @@ a {
   text-decoration: none;
 }
 
-.activeShuffle {
+.activeColor {
   color: #0f85ff;
-  background-color: #efefef;
   border-radius: 10px;
 }
 
@@ -656,7 +645,7 @@ a {
         width: 50%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-evenly;
         padding: 0 10px;
 
         & h3 {
@@ -665,8 +654,7 @@ a {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          font-weight: 500;
-          padding: 0.5rem 0em
+          font-size: 18px;
         }
 
         & a {
@@ -758,6 +746,12 @@ button {
   outline: none;
   background-color: transparent;
   cursor: pointer;
+  transition: all .25s linear;
+  border-radius: 10px;
+}
+
+button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* 播放类按钮 end */
@@ -788,7 +782,7 @@ button {
   width: 100%;
   height: 100vh;
   z-index: 200;
-  background-color: #333;
+  background-color: #f8b6f8;
   // background-color: rgba(25, 26, 32, .85);
 
   background-size: cover;
@@ -1021,12 +1015,18 @@ button {
   }
 
   & .song-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     overflow: scroll;
 
     & .playing-item {
       font-size: 14px;
       display: flex;
       padding: 15px 0;
+      cursor: pointer;
+      border-radius: 5px;
+      margin: 5px 0;
 
       & span {
         padding: 0px 5px;
@@ -1036,12 +1036,37 @@ button {
         color: #333;
         font-size: 14px;
         font-weight: 550;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       & .singer {
         color: rgb(106, 106, 106);
       }
     }
+
+    & .activeSongColor>span {
+      color: #0f85ff !important;
+    }
+
+    // 音乐播放列表激活状态
+    & .activeSongColor {
+      background-color: #f1f1f1;
+    }
+
+    & .playing-item:hover {
+      background-color: #f1f1f1;
+    }
   }
+}
+
+.asd {
+  transform: scale(1.1);
+  transition: all 0.2s linear;
+}
+
+.lock-bar button:hover {
+  background-color: transparent;
 }
 </style>

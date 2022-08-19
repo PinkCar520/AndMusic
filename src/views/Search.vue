@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div class="search" v-show="show">
     <!-- 歌手区域 -->
     <div class="singer-content">
       <div class="title">
@@ -8,7 +8,7 @@
       </div>
       <div class="singer-box">
         <div class="singer" v-for="(searchList, index) in searchLists.slice(0, 3)" :key="index">
-          <img :src="searchList.img1v1Url" alt="" loading="lazy" />
+          <img :src="searchList.img1v1Url + '?param=512y512'" alt="" loading="lazy" />
           <div class="singer-info">
             <p>歌手: {{ searchList.name }}</p>
           </div>
@@ -26,7 +26,7 @@
         <div class="track-list">
           <!-- 渲染歌曲区域 -->
           <div class="track-item" v-for="searchSingleList in searchSingleLists" :key="searchSingleList.id"
-            @click="transferId(searchSingleList.id)">
+            @click="selectTrack(searchSingleList.id)">
             <!-- 封面 -->
             <div class="play track-play">
               <button>
@@ -57,7 +57,7 @@
               <button>
                 <svg-icon icon-class="play"></svg-icon>
               </button>
-              <img :src="searchAlbumList.blurPicUrl + '?param=512y512'" class="lazy-img animated-bg" loading='lazy' />
+              <img :src="searchAlbumList.blurPicUrl + '?param=256y256'" class="lazy-img animated-bg" loading='lazy' />
             </div>
             <!-- 专辑信息 -->
             <div class="album-info">
@@ -72,10 +72,13 @@
   </div>
 </template>
 <script>
+import NProgress from 'nprogress';
+import { mapActions } from 'vuex';
 export default {
   name: "Search",
   data() {
     return {
+      show: false,
       searchLists: "",
       searchSingleLists: "",
       searchAlbumLists: "",
@@ -92,14 +95,20 @@ export default {
       this.searchSingleLists = res;
     });
     this.$bus.$on("searchAlbum", (res) => {
-      // console.log(res);
+      console.log(res);
       this.searchAlbumLists = res;
     });
-    this.transferId()
+    setTimeout(() => {
+      if (!this.show) NProgress.start()
+    }, 300);
   },
   // 在组件销毁前,清除事件监听
   beforeDestroy() {
-    this.$bus.$off(["searchInfo", 'searchSingle', 'searchAlbum']);
+    this.$bus.$off();
+  },
+  mounted() {
+    NProgress.done()
+    this.show = true
   },
   methods: {
     // 路由跳转
@@ -111,15 +120,15 @@ export default {
         }
       })
     },
-    // 传送Id
-    transferId(trackId) {
-      this.$bus.$emit("trackValue", trackId);
+    // 列表播放
+    // ...mapActions({ selectTrack: 'MusicId' })
+    selectTrack(value) {
+      this.$store.dispatch('MusicId', value)
     }
   }
 };
 </script>
 <style lang="scss" scoped>
-
 // 标题文本
 .title {
   height: 80px;

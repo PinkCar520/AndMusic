@@ -1,5 +1,5 @@
 <template>
-  <div class="discover">
+  <div class="discover" v-show="show">
     <h1>发现</h1>
     <div class="main">
       <!-- 左侧边栏分类按钮 -->
@@ -46,10 +46,12 @@ import {
   getNewSongAPI,
 } from "@/api/playlist";
 import { viewCounts } from "../utils/common";
+import NProgress from "nprogress";
 export default {
   name: "Discover",
   data() {
     return {
+      show: false,
       playlistCats: [],
       categoryList: [
         "全部",
@@ -69,17 +71,19 @@ export default {
     };
   },
   created() {
-    this.initData();
+    this.getPlaylistCat();
+    setTimeout(() => {
+      if (!this.show) NProgress.start()
+    }, 300)
   },
   methods: {
-    initData() {
-      // 判断渲染
-      // console.log(this.category);
+    async getPlaylistCat() {
       // 默认加载 全部歌单
-      getPlaylistCatAPI().then((res) => {
-        // console.log(res);
-        this.playlistCats = res.data.playlists;
-      });
+      const { data: res } = await getPlaylistCatAPI()
+      // console.log(res);
+      NProgress.done();
+      this.playlistCats = res.playlists;
+      this.show = true
     },
     goPlayList(index) {
       this.$router.push({
@@ -98,7 +102,7 @@ export default {
       // "有声书",
       switch (category) {
         case "全部":
-          console.log("点击的是", category);
+          // console.log("点击的是", category);
           // 获取全部歌单
           getPlaylistCatAPI().then((res) => {
             // console.log(res);
@@ -107,7 +111,7 @@ export default {
           });
           break;
         case "排行榜":
-          console.log("点击的是", category);
+          // console.log("点击的是", category);
           // 获取排行榜
           getTopListAPI().then((res) => {
             // console.log(res);
@@ -236,6 +240,7 @@ export default {
   & h1 {
     height: 80px;
     line-height: 80px;
+    font-size: 20px;
   }
 
   & .main {
@@ -243,8 +248,8 @@ export default {
     flex-direction: row;
 
     & .discover-buttons {
-      background: rgb(236, 236, 236);
-      border-radius: 5px;
+      background: #ededed;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -252,15 +257,16 @@ export default {
       & .button {
         width: 120px;
         height: 40px;
-        padding: 10px 20px;
         margin: 10px;
-        font-weight: 550;
-        // color: #555;
-        color: rgb(51, 94, 234);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #048bff;
         background-color: rgb(250, 250, 250);
         border-radius: 5px;
-        text-align: center;
         cursor: pointer;
+        font-size: 18px;
+        font-weight: 550;
       }
     }
 
@@ -327,11 +333,13 @@ export default {
               //   text-align: center;
               & h4 {
                 width: 100%;
+                font-size: 20px;
                 white-space: wrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 font-weight: 550;
-                padding: 0.8rem 0em;
+                padding: 12px 0;
+                font-size: 18px;
               }
 
               & h5 {

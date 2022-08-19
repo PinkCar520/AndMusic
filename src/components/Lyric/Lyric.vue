@@ -46,7 +46,7 @@
   <!-- 歌词页面 end -->
 </template>
 <script>
-import SvgIcon from "./SvgIcon.vue";
+import SvgIcon from "@/components/SvgIcon.vue";
 import VueSlider from "vue-slider-component";
 import LyricParse from "lyric-parser";
 export default {

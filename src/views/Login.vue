@@ -28,11 +28,7 @@ import {
   getLoginQrCodeKeyAPI,
   getLoginQrCodeCreateAPI,
   getLoginQrCodeCheckAPI,
-  getLoginAPI
 } from "@/api/auth";
-import {
-  Message
-} from 'element-ui';
 import SvgIcon from '../components/SvgIcon.vue';
 export default {
   components: { SvgIcon },
@@ -52,9 +48,7 @@ export default {
     initData() {
       // 1. 二维码 key 生成接口
       getLoginQrCodeKeyAPI().then((res) => {
-        // console.log(res);
-        // console.log("二维码 key 生成接口...");
-        this.qrCodeKey = res.data.data.unikey; // 后台返回的数据是Object,需要转换为字符串
+        this.qrCodeKey = res.data.data.unikey;
         // console.log("key:" + this.qrCodeKey);
 
         // 2. 根据获取的key 生成二维码图片
@@ -62,10 +56,8 @@ export default {
           key: this.qrCodeKey,
           qrimg: true,
         }).then((res) => {
-          // console.log(res);
-          // console.log("二维码base信息生成接口...");
           this.qrImg = res.data.data.qrimg;
-          // console.log("base:" + this.qrImg);
+          // console.log("二维码base信息:" + this.qrImg);
         });
 
         // 3. 二维码检测扫码状态接口
@@ -88,8 +80,6 @@ export default {
               if (window.sessionStorage.getItem("cookie")) {
                 this.$router.push('/login/user')
               }
-              // 获取用户信息
-              getLoginAPI(res.data.cookie);
             }
           });
         }, 2000);

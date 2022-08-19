@@ -10,11 +10,9 @@
                         <p>{{ userDetailList.nickname }}</p>
                     </div>
                     <div class="other">
-                        <!-- <p>累计听歌:{{ userDetailList.listenSongs }}</p> -->
                         <span>关注: {{ userDetailList.follows }}</span>
                         <span>粉丝: {{ userDetailList.followeds }}</span>
                         <span>lv.{{ level }}</span>
-                        <!-- <p>所有歌单:{{ userDetailList.profile.playlistCount }}</p> -->
                     </div>
                 </div>
                 <!-- 展示用户喜欢的音乐 -->
@@ -32,11 +30,8 @@
             </div>
             <!-- 每日推荐 -->
             <div class="daily-recommend">
-                <!-- 渲染歌曲区域 -->
-                <div class="daily-recommend-item" v-for="(item, index) in userRecommendList" :key="item.id"
-                    @click="selectTrack(item.id, index)">
-                    <!-- <button @click="playLi()">播放列表</button> -->
-                    <!-- <p>{{item.id}}</p> -->
+                <div class="daily-recommend-item" v-for="item in userRecommendList" :key="item.id"
+                    @click="selectTrack(item.id)">
                     <div class="daily-recommend-play">
                         <button>
                             <svg-icon icon-class="play"></svg-icon>
@@ -105,9 +100,8 @@
                     <!-- 最近播放歌曲 -->
                     <div class="user-recent-music">
                         <!-- 渲染歌曲区域 -->
-                        <div class="recent-item" v-for="(item, index) in userRecordList" :key="item.id"
-                            @click="selectTrack(item.id, index)">
-                            <!-- <button @click="playLi()">播放列表</button> -->
+                        <!-- <div class="recent-item" v-for="item in userRecordList" :key="item.resourceId"
+                            @click="selectTrack(item.resourceId)">
                             <div class="play recent-play">
                                 <button>
                                     <svg-icon icon-class="play"></svg-icon>
@@ -119,7 +113,8 @@
                                 <h3 class="song-name">{{ item.data.al.name }}</h3>
                                 <span>{{ item.data.ar[0].name }}</span>
                             </div>
-                        </div>
+                        </div> -->
+                        <TrackList :tracksData="userRecordList"></TrackList>
                     </div>
                 </el-tab-pane>
             </el-tabs>
@@ -140,8 +135,14 @@ import {
     getUserRecommendSongsListAPI
 
 } from "@/api/user.js";
+import TrackList from "@/components/TrackList/TrackList.vue";
 import NProgress from "nprogress";
+import { mapActions } from "vuex";
 export default {
+    name: "User",
+    components: {
+        TrackList
+    },
     data() {
         return {
             userShow: false,
@@ -242,8 +243,9 @@ export default {
         // 获取用户听歌排行数据
         async getUserRecordList() {
             const { data: res } = await getUserRecordListAPI()
-            this.userRecordList = res.data.list
-
+            this.userRecordList = res.data.list.map((item) => {
+                return item.data
+            })
             // console.log('用户听歌排行数据-->', this.userRecordList);
         },
         // 获取用户每日推荐数据
@@ -275,8 +277,9 @@ export default {
             });
         },
         // 列表播放
-        selectTrack(value, index) {
-            this.$bus.$emit("userValue", value);
+        // ...mapActions({ selectTrack: 'MusicId' }),
+        selectTrack(value) {
+            this.$store.dispatch('MusicId', value)
         },
         // 喜欢播放
         likePlay() {
@@ -286,11 +289,11 @@ export default {
                 str += e + ','
             });
             str = str.substring(0, str.length - 1)
-            this.playlist = str.split(',')
+            const playlist = str.split(',')
             // console.log(this.playlist);
             this.$store.dispatch("MusicPlaylist", this.playlist);
             this.$store.dispatch("MusicId", this.userLikeList[0])
-        }
+        },
     },
 }
 </script>
@@ -312,14 +315,9 @@ export default {
 
     & .top {
         display: flex;
-        // height: 500px;
-        // overflow: hidden;
 
-        // justify-content: space-between;
         & .user-top-left {
-            // display: flex;
-            // flex-direction: column;
-            // justify-content: space-between;
+
             flex: 1;
 
             // 用户信息
@@ -342,13 +340,11 @@ export default {
 
                 // 头像,昵称
                 & .primary {
+                    width: 100%;
+                    text-align: center;
 
-                    // position: relative;
                     & .avatar {
-                        // position: absolute;
-                        // left: 50%;
-                        // top: 50%;
-                        // transform: translate(-50%,-25%);
+
                         margin-top: 40px;
                         width: 80px;
                         height: 80px;
@@ -356,16 +352,22 @@ export default {
                     }
 
                     & p {
+                        font-size: 18px;
                         padding: 5px 0;
                     }
                 }
 
                 // 关注,等级
                 & .other {
+                    width: 100%;
+                    font-size: 14px;
                     padding: 20px;
+                    display: flex;
+                    justify-content: space-evenly;
 
                     & span {
-                        padding: 0 20px;
+                        font-size: 14px;
+                        // padding: 0 20px;
                         color: #a3a3a3;
                     }
                 }
@@ -485,9 +487,8 @@ export default {
                         overflow: hidden;
                         text-overflow: ellipsis;
                         font-weight: 500;
-                        margin: 0.3rem 0em;
+                        margin: 4px 0;
                         font-size: 16px;
-
                     }
 
                     & span {
@@ -529,7 +530,7 @@ export default {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     text-align: center;
-                    margin: 0.8rem 0;
+                    margin: 12px 0;
                 }
 
                 & p {
@@ -544,7 +545,7 @@ export default {
         & .user-recent-music {
             width: 1180px;
             height: 100%;
-            padding-bottom: 5rem;
+            padding-bottom: 80px;
             margin: auto;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -572,17 +573,15 @@ export default {
                     flex: 1;
                     flex-direction: column;
                     justify-content: center;
-                    // background-color: #fff;
-                    // border-top-right-radius: 10px;
-                    // border-bottom-right-radius: 10px;
-                    padding: 0px 2rem;
+                    padding: 0px 32px;
 
                     & h3 {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
                         font-weight: 500;
-                        margin: 0.3rem 0em;
+                        font-size: 18px;
+                        margin: 4px 0em;
                     }
 
                     & span {

@@ -21,21 +21,17 @@ import router from "./router";
 import store from "./store";
 // 引入normalize.css 样式重置
 import "normalize.css/normalize.css";
-// 引入element-ui的css
-import "element-ui/lib/theme-chalk/index.css";
 // 引入阿里矢量库定义的方法
 import "@/utils/index";
 // 引入插件
 import plugins from "./utils/plugins";
 import NProgress from "nprogress";
 import "@/assets/css/nprogress.css";
-import BetterScroll from "better-scroll";
+import 'element-ui/lib/theme-chalk/index.css';
 
-
+// import  from ""
 // 使用plugins插件
 Vue.use(plugins);
-// 引入动画库
-import "vue2-animate/dist/vue2-animate.min.css";
 
 // Vue-bus事件处理中心
 const bus = new Vue();

@@ -13,7 +13,7 @@ export function formatDate(time = +new Date()) {
   // var seconds = zeroFill(date.getSeconds());
   // 整理好的数据返回出去
   // console.log((date.getTime() * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ')); // 2022年05月29日
-  return year + "年" + month + "月" + day + "日";
+  return year + "." + month + "." + day + "";
   // return date.toJSON().substr(0, 19).replace('T', ' ').replace(/-/g,'-');  // 2022-05-29
 }
 // 播放量

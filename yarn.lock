@@ -40,7 +40,7 @@
 
 "@babel/helper-module-imports@7.0.0-beta.35":
   version "7.0.0-beta.35"
-  resolved "https://registry.npmmirror.com/@babel/helper-module-imports/-/helper-module-imports-7.0.0-beta.35.tgz#308e350e731752cdb4d0f058df1d704925c64e0a"
+  resolved "https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.0.0-beta.35.tgz#308e350e731752cdb4d0f058df1d704925c64e0a"
   integrity sha512-vaC1KyIZSuyWb3Lj277fX0pxivyHwuDU4xZsofqgYAbkDxNieMg2vuhzP5AgMweMY7fCQUMTi+BgPqTLjkxXFg==
   dependencies:
     "@babel/types" "7.0.0-beta.35"
@@ -67,7 +67,7 @@
 
 "@babel/types@7.0.0-beta.35":
   version "7.0.0-beta.35"
-  resolved "https://registry.npmmirror.com/@babel/types/-/types-7.0.0-beta.35.tgz#cf933a9a9a38484ca724b335b88d83726d5ab960"
+  resolved "https://registry.npmjs.org/@babel/types/-/types-7.0.0-beta.35.tgz#cf933a9a9a38484ca724b335b88d83726d5ab960"
   integrity sha512-y9XT11CozHDgjWcTdxmhSj13rJVXpa5ZXwjjOiTedjaM0ba5ItqdS02t31EhPl7HtOWxsZkYCCUNrSfrOisA6w==
   dependencies:
     esutils "^2.0.2"
@@ -1426,7 +1426,7 @@ babel-helper-vue-jsx-merge-props@^2.0.0:
 
 babel-plugin-component@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.npmmirror.com/babel-plugin-component/-/babel-plugin-component-1.1.1.tgz#9b023a23ff5c9aae0fd56c5a18b9cab8c4d45eea"
+  resolved "https://registry.npmjs.org/babel-plugin-component/-/babel-plugin-component-1.1.1.tgz#9b023a23ff5c9aae0fd56c5a18b9cab8c4d45eea"
   integrity sha512-WUw887kJf2GH80Ng/ZMctKZ511iamHNqPhd9uKo14yzisvV7Wt1EckIrb8oq/uCz3B3PpAW7Xfl7AkTLDYT6ag==
   dependencies:
     "@babel/helper-module-imports" "7.0.0-beta.35"
@@ -3254,7 +3254,7 @@ estraverse@^5.2.0:
 
 esutils@^2.0.2:
   version "2.0.3"
-  resolved "https://registry.npmmirror.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
+  resolved "https://registry.npmjs.org/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
 etag@~1.8.1:
@@ -5025,6 +5025,11 @@ md5.js@^1.3.4:
     hash-base "^3.0.0"
     inherits "^2.0.1"
     safe-buffer "^5.1.2"
+
+mddir@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/mddir/-/mddir-1.1.1.tgz#fa7ddd26b92558e6eb9f890d02d25a3f7cda056b"
+  integrity sha512-VkBEnXdqoCTC5TLzuA8ITGgb3278sl2HQ9xWCEBK4viZXiyl9IzFRXQ+41x16Z9ODzVabSeRsPWGaD+KbigG6Q==
 
 mdn-data@2.0.14:
   version "2.0.14"
@@ -7731,7 +7736,7 @@ to-arraybuffer@^1.0.0:
 
 to-fast-properties@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.npmmirror.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
+  resolved "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
   integrity sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==
 
 to-object-path@^0.3.0:
@@ -8186,11 +8191,6 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.npmmirror.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
-
-vue2-animate@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.npmjs.org/vue2-animate/-/vue2-animate-2.1.4.tgz#7a241b8a0f839d97b9df63d4551fbe666354175e"
-  integrity sha512-tIFHLxLYXwti0E3rJ7OeIUxTl+uVC8t9SYlD4aQ+gfgcheSu9yDbXklBNRIFxBmfNWDVpKQLMvGLxRrrCn3alw==
 
 vue@^2.6.14:
   version "2.6.14"

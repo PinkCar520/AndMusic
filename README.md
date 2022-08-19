@@ -38,7 +38,7 @@ AndMusic 是 基于 [网易云音乐 API](https://binaryify.github.io/NeteaseClo
 - [YesPlayMusic](https://github.com/qier222/YesPlayMusic)
 
 #### 效果图
-- 首页 ![home-screenshot](images/Snipaste_home.png)
+- 首页 ![home-screenshot][Snipaste_home.png)
 - 发现页 ![discover-screenshot](images/Snipaste_discover.png)
 - 歌曲列表页 ![playlist-screenshot](images/Snipaste_playlist.png)
 - 我的页面 ![user-screenshot](images/Snipaste_user.png)

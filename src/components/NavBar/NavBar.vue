@@ -1,6 +1,5 @@
 <template>
   <div class="header">
-    <div class="fixed"></div>
     <div class="container">
       <!-- 导航条 start -->
       <div class="header-link">
@@ -102,7 +101,7 @@ export default {
         getSearchAPI({ keywords: this.searchContent, type: 1 }).then((res) => {
           this.searchSingleData = res.data.result.songs;
           this.$bus.$emit("searchSingle", this.searchSingleData);
-          // console.log('单曲', res.data.result.songs);
+          console.log('单曲', res);
         });
         // 专辑
         getSearchAPI({ keywords: this.searchContent, type: 10 }).then((res) => {
@@ -182,15 +181,16 @@ ul {
       // 首页-发现-我的
       display: flex;
       flex: 1 1 auto;
+
       flex-direction: row;
-      justify-content: center;
+      justify-content: space-evenly;
       align-items: center;
 
       & a {
         // color: #fff;
         font-size: 20px;
         font-weight: 550;
-        padding: 5px 10px;
+        // padding: 5px 10px;
         margin: 0 20px;
       }
     }
@@ -219,6 +219,7 @@ ul {
           outline: none;
           text-indent: 20px;
           background-color: #f3f3f3;
+          font-size: 16px;
         }
 
         & input::-webkit-search-cancel-button {
@@ -236,6 +237,7 @@ ul {
           outline: none;
           background-color: transparent;
           cursor: pointer;
+          display: flex;
         }
       }
 

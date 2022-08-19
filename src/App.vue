@@ -22,24 +22,17 @@
 </template>
 <script>
 // 此处引入子组件
-import NavBar from "./components/NavBar.vue"; // 3. 引入NavBar
-import Player from "./components/Player.vue";
-import Lyric from "@/components/Lyric.vue";
-import SvgIcon from "./components/SvgIcon.vue";
+import NavBar from "@/components/NavBar/NavBar.vue"; // 3. 引入NavBar
+import Player from "@/components/Player/Player.vue";
+import Lyric from "@/components/Lyric/Lyric.vue";
+import SvgIcon from "@/components/SvgIcon.vue";
 export default {
   name: "App",
   components: {
-    /*
-     * 4. 在App.vue中注册NavBar组件,否则报错
-     * <NavBar> - did you register the component correctly? For recursive components,
-     * make sure to provide the "name" option.
-     */
     NavBar,
     Player,
     Lyric,
-  },
-  mounted() {
-    window.Vue = this;
+    SvgIcon
   },
   data() {
     return {
@@ -71,8 +64,6 @@ html {
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   min-width: 1423px;
   background-color: #f5f5f5;
   transition: all 0.4s;
@@ -167,7 +158,7 @@ img[lazy="loading"] {
 
   // 排行榜item
   & img {
-    width: 217px;
+    width: 220px;
     border-radius: 10px;
     transition: all 0.2s ease-in-out;
   }
