@@ -1,0 +1,35 @@
+{
+  "name": "andmusicv3",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@types/nprogress": "^0.2.0",
+    "ant-design-vue": "^4.0.0",
+    "axios": "^0.27.2",
+    "element-plus": "^2.3.8",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.1.6",
+    "pinia-plugin-persistedstate": "^3.2.0",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.4",
+    "vue-slider-component": "^4.1.0-beta.7"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.6",
+    "@vitejs/plugin-vue": "^3.0.3",
+    "fast-glob": "^3.2.11",
+    "postcss-px-to-viewport": "^1.1.1",
+    "sass": "^1.64.2",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.25.1",
+    "vite": "^4.4.8",
+    "vite-plugin-svg-icons": "^2.0.1",
+    "vue-tsc": "^0.39.5"
+  }
+}
