@@ -1,8 +1,11 @@
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { ElMessage } from "element-plus";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+console.log(API_BASE_URL,'API_BASE_URL');
+
 // 创建axios对象
 const request = axios.create({
-  baseURL: "/api",
+  baseURL: API_BASE_URL,
   // 用于允许跨域请求时携带认证信息（例如 Cookie）
   withCredentials: true,
   timeout: 10000, // 请求超时-->10000ms,
