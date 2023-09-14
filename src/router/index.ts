@@ -57,6 +57,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Playlist,
     // 路由组件props传参_布尔形式
     props: true,
+    meta: {
+      keepAlive: true,
+    },
   },
   {
     // 新碟上架

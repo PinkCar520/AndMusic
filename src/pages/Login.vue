@@ -6,15 +6,15 @@
           使用 <a href="https://music.163.com/#/download">网易云音乐APP</a> 扫码登录
         </div>
         <div class="qr-img">
-          <img :src="qrImg" alt="" />
+          <img :src="store.qrImg" alt="" />
         </div>
         <div>
-          <div class="scan-qr" v-if="qrCode === 802">
+          <div class="scan-qr" v-if="store.qrCode === 802">
             <SvgIcon name="success"></SvgIcon>
             <p class="info">扫码成功</p>
             <p class="hint">请在手机上确认授权登录</p>
           </div>
-          <div class="scan-qr" v-else-if="qrCode === 803">
+          <div class="scan-qr" v-else-if="store.qrCode === 803">
             <SvgIcon name="success"></SvgIcon>
             <p class="info">登录成功</p>
           </div>
@@ -24,67 +24,13 @@
   </div>
 </template>
 <script setup>
-import {
-  getLoginQrCodeKeyAPI,
-  getLoginQrCodeCreateAPI,
-  getLoginQrCodeCheckAPI,
-} from "@/api/auth";
 import { ref } from "vue"
 import { useRouter, useRoute } from "vue-router"
-import { getLoginStatusAPI } from "@/api/user";
-
-const qrCodeKey = ref("");
-const qrImg = ref("");
-const qrMessage = ref("");
-const qrCode = ref("");
-const qrCodeInfo = ref("");
+import { useLoginStore } from '@/stores/login'
 const router = useRouter()
 const route = useRoute()
-
-let QrCodeCheckInterval; // 定义在全局作用域中
-async function checkQrCodeStatus() {
-  const { code, message, cookie } = await getLoginQrCodeCheckAPI(qrCodeKey.value);
-  qrMessage.value = message;
-  qrCode.value = code;
-
-  if (qrCode.value === 801) {
-    console.log(qrMessage.value);
-  } else if (qrCode.value === 802) {
-    console.log(qrMessage.value);
-  } else if (qrCode.value === 803) {
-    // 停止检测
-    clearInterval(QrCodeCheckInterval);
-    console.log(QrCodeCheckInterval, 'QrCodeCheckInterval');
-    ElMessage({
-      message: qrMessage.value,
-      type: "success",
-      duration: 3 * 1000,
-    });
-    window.localStorage.setItem('cookie', cookie);
-    if (window.localStorage.getItem('cookie')) {
-      console.log(route, 'route');
-      const redirectUrl = route.query.redirect
-      router.push({ path: redirectUrl });
-    }
-  }
-}
-
-getLoginQrCodeKeyAPI()
-  .then((res) => {
-    qrCodeKey.value = res.data.unikey;
-
-    // 2. 根据获取的key生成二维码图片
-    return getLoginQrCodeCreateAPI({
-      key: qrCodeKey.value,
-      qrimg: true,
-    });
-  })
-  .then((res) => {
-    qrImg.value = res.data.qrimg;
-
-    // 3. 二维码检测扫码状态接口
-    QrCodeCheckInterval = setInterval(checkQrCodeStatus, 3000);
-  });
+const store = useLoginStore()
+store.getLoginQrCodeKey()
 
 </script>
 <style lang="scss" scoped>

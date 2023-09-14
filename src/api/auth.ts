@@ -1,4 +1,5 @@
 import request from "@/utils/request";
+import { getLoginStatusAPI } from "./user";
 /**
  * @description:
  * @return {*}
@@ -47,7 +48,12 @@ export function getLoginQrCodeCreateAPI(params: object) {
  * 接口地址 : /login/qr/check
  * 调用例子 : /login/qr/check?key=xxx
  */
-export function getLoginQrCodeCheckAPI(key: string) {
+export interface LoginStatus {
+  code: number;
+  message: string;
+  cookie: string;
+}
+export function getLoginQrCodeCheckAPI(key: string): Promise<LoginStatus> {
   return request({
     method: "get",
     url: "/login/qr/check",

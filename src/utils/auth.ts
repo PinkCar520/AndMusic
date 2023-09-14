@@ -1,7 +1,4 @@
 import { getLoginStatusAPI, LoginStatus } from "@/api/user";
-import pinia from "@/stores";
-import { useBaseStore } from "@/stores/user";
-const store = useBaseStore(pinia);
 import { ElMessage } from "element-plus";
 // 验证用户的cookie时效性
 async function isLoggedIn() {
@@ -16,11 +13,11 @@ async function isLoggedIn() {
     return false;
   } else {
     // 已登录
-    store.$patch((state) => {
-      state.userInfo = profile;
-      state.userId = profile.userId;
-    });
-    store.onLoginChange(true);
+    // store.$patch((state) => {
+    //   state.userInfo = profile;
+    //   state.userId = profile.userId;
+    // });
+    // store.onLoginChange(true);
     return true;
   }
 }
