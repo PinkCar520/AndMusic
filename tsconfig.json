@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    // 指定ts编译的js目标版本
+    "target": "ES6",
     "useDefineForClassFields": true,
-    "module": "ESNext",
+    // 指定使用的模块化规范
+    "module": "ES6",
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",
@@ -10,14 +12,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
+    "lib": ["ES6", "DOM"],
     "skipLibCheck": true,
     "baseUrl": ".",
+    // 不生成编译后的文件
     "noEmit": true,
     "paths": {
       "@/*": ["src/*"]
     }
   },
+  // 定义被编译文件所有的目录
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",

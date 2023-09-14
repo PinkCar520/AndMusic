@@ -11,7 +11,7 @@ import BannerDetail from "@/components/BannerDetail/BannerDetail.vue";
 import TrackList from "@/components/TrackList/TrackList.vue";
 import { getPlaylistDetailAPI } from "@/api/playlist";
 import NProgress from "nprogress";
-import { onBeforeMount, ref, nextTick } from "vue"
+import { onBeforeMount, onMounted, ref, nextTick, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted, onActivated, onDeactivated } from "vue"
 import { useRouter, useRoute } from "vue-router"
 import { useBaseStore } from "@/stores/user"
 const props = defineProps({
@@ -19,6 +19,31 @@ const props = defineProps({
     type: String,
     required: true
   }
+})
+console.log('setup');
+onBeforeMount(() => {
+  console.log('onBeforeMount');
+})
+onMounted(() => {
+  console.log('onMounted');
+})
+onBeforeUpdate(() => {
+  console.log('onBeforeUpdate');
+})
+onUpdated(() => {
+  console.log('onUpdated');
+})
+onBeforeUnmount(() => {
+  console.log('onBeforeUnmount');
+})
+onUnmounted(() => {
+  console.log('onUnmounted');
+})
+onActivated(() => {
+  console.log('activated');
+})
+onDeactivated(() => {
+  console.log('onDeactivated');
 })
 // 定义歌曲的数据结构
 interface Track {

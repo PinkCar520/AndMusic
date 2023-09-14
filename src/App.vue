@@ -2,7 +2,10 @@
   <nav>
     <NavBar />
   </nav>
-  <router-view></router-view>
+  <keep-alive>
+    <router-view v-if="$route.meta.keepAlive"></router-view>
+  </keep-alive>
+  <router-view v-if="!$route.meta.keepAlive"></router-view>
   <Player />
 </template>
 <script lang="ts" setup>
