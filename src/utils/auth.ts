@@ -4,7 +4,7 @@ import { ElMessage } from "element-plus";
 async function isLoggedIn() {
   const { profile } = (await getLoginStatusAPI()) as LoginStatus;
   if (!profile) {
-    // 匿名用户、未登录
+    // 匿名用户、未登录状态
     ElMessage({
       message: "当前是游客模式",
       type: "warning",
