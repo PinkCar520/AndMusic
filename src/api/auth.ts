@@ -4,7 +4,7 @@ import { getLoginStatusAPI } from "./user";
  * @description:
  * @return {*}
  * 二维码登录
- * 说明: 二维码登录涉及到 3 个接口,调用务必带上时间戳,防止缓存
+ * 说明: 二维码登录涉及到 3 个接口, 调用务必带上时间戳,防止缓存
  * 1. 二维码 key 生成接口
  * 说明: 调用此接口可生成一个 key
  * 接口地址 : /login/qr/key
