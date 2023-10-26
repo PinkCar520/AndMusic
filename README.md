@@ -30,8 +30,8 @@ AndMusic 是 基于 [网易云音乐 API](https://binaryify.github.io/NeteaseClo
 
 #### 使用说明(update)
 
-1.  本项目仅供学习研究使用，禁止用于商业及非法用途。
-2. Dev
+1. 本项目仅供学习研究使用，禁止用于商业及非法用途。
+2. Vue项目
 
 #### 灵感来源
 
